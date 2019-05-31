@@ -16,22 +16,23 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(dplyr)
+library(xtable)
 setwd("C:/Data")
 Activity <- data.table::fread("activity.csv", header=TRUE)
 
 #getting mean number of steps
 sumstepsperday<-tapply(Activity$steps, Activity$date, sum,na.rm=TRUE)
 #this is the total number of steps per day
-meanstepsperday<-mean(sumstepsperday)
+meanstepsperday<-tapply(Activity$steps, Activity$date, mean,na.rm=TRUE)
 #this is the mean number of steps for all days
-medianstepsperday<-median(sumstepsperday)
+medianstepsperday<-tapply(Activity$steps, Activity$date, median,na.rm=TRUE)
 #this is the median number of steps for all days
+daydata<-unique(strptime(Activity$date,"%Y-%m-%d"))
 
-hist(sumstepsperday, xlab="Total Steps per day", ylab="freq", main="Histogram Total steps per day", breaks=1000)
+plot(x = daydata, y = sumstepsperday, main = "Total Steps per day", xlab = "Date", ylab = "Steps", type = "h")
 
-cat("The mean steps per day are", meanstepsperday, "steps")
-cat("The median steps per day are", medianstepsperday, "steps")
-
+Output1<-data.frame(daydata,meanstepsperday,medianstepsperday)
+Output1
 ```
 
 ### Daily activity pattern
@@ -50,7 +51,6 @@ cat("The max number of steps occurs at interval", MaxInterval[[1]], "which corre
 ### Handling NA
 
 ```{r, message=FALSE, warning=FALSE}
-
 #getting the number of NA
 NAInTheData<-sum(is.na(Activity))
 cat("The steps are showing NA values", NAInTheData, "times")
@@ -59,19 +59,18 @@ ActivityNAFilled$AvgSteps<-Meanstepsperinterval
 #now replacing each NA with the corresponding average number of steps for the same period for all the data set
 ActivityNAFilled$steps[is.na(ActivityNAFilled$steps)]<-ActivityNAFilled$AvgSteps[which(is.na(ActivityNAFilled$steps))]
 
+#getting mean number of steps
 sumstepsperday<-tapply(ActivityNAFilled$steps, ActivityNAFilled$date, sum,na.rm=TRUE)
 #this is the total number of steps per day
-meanstepsperday<-mean(sumstepsperday)
+meanstepsperday<-tapply(ActivityNAFilled$steps, ActivityNAFilled$date, mean,na.rm=TRUE)
 #this is the mean number of steps for all days
-medianstepsperday<-median(sumstepsperday)
+medianstepsperday<-tapply(ActivityNAFilled$steps, ActivityNAFilled$date, median,na.rm=TRUE)
 #this is the median number of steps for all days
 
-hist(sumstepsperday, xlab="Adjusted Total Steps per day", ylab="freq", main="Adjusted Histogram Total steps per day", breaks=1000)
-
-cat("The adjusted (NA replaced) mean steps per day are", meanstepsperday, "steps")
-cat("The adjusted (NA replaced) median steps per day are", medianstepsperday, "steps")
+plot(x = daydata, y = sumstepsperday, main = "Total Steps per day", xlab = "Date", ylab = "Steps", type = "h")
 
 ```
+It is clear that both plots are different
 
 ### Weekend vs Weekday differences
 
