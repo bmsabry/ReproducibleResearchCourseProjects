@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559285056786.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "76ADB8B4",
+    "lastKnownWriteTime" : 1559285074,
+    "last_content_update" : 1559285074357,
+    "path" : "~/ReproducibleResearchCourseProjects/Project1ReproducibleResearch.Rmd",
+    "project_path" : "Project1ReproducibleResearch.Rmd",
+    "properties" : {
+        "cursorPosition" : "3,17",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,92 @@
+---
+title: "Project1ReproducibleResearch"
+author: "Bassam Abdelnabi"
+date: "5/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Mean per day analysis
+
+```{r , message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+setwd("C:/Data")
+Activity <- data.table::fread("activity.csv", header=TRUE)
+
+#getting mean number of steps
+sumstepsperday<-tapply(Activity$steps, Activity$date, sum,na.rm=TRUE)
+#this is the total number of steps per day
+meanstepsperday<-mean(sumstepsperday)
+#this is the mean number of steps for all days
+medianstepsperday<-median(sumstepsperday)
+#this is the median number of steps for all days
+
+hist(sumstepsperday, xlab="Total Steps per day", ylab="freq", main="Histogram Total steps per day", breaks=1000)
+
+cat("The mean steps per day are", meanstepsperday, "steps")
+cat("The median steps per day are", medianstepsperday, "steps")
+
+```
+
+### Daily activity pattern
+
+```{r , message=FALSE, warning=FALSE}
+
+#getting mean number of steps
+Meanstepsperinterval<-tapply(Activity$steps, Activity$interval, mean,na.rm=TRUE)
+#this is the Mean number of steps per interval
+oneday <- filter(Activity,Activity$date=="2012-10-01")
+time <-oneday$interval
+plot(time,Meanstepsperinterval,type = "l")
+MaxInterval<-which.max(Meanstepsperinterval)
+cat("The max number of steps occurs at interval", MaxInterval[[1]], "which corresponds to",Activity$interval[MaxInterval[[1]]] )
+```
+### Handling NA
+
+```{r , message=FALSE, warning=FALSE}
+
+#getting the number of NA
+NAInTheData<-sum(is.na(Activity))
+cat("The steps are showing NA values", NAInTheData, "times")
+ActivityNAFilled<-Activity
+ActivityNAFilled$AvgSteps<-Meanstepsperinterval
+#now replacing each NA with the corresponding average number of steps for the same period for all the data set
+ActivityNAFilled$steps[is.na(ActivityNAFilled$steps)]<-ActivityNAFilled$AvgSteps[which(is.na(ActivityNAFilled$steps))]
+
+sumstepsperday<-tapply(ActivityNAFilled$steps, ActivityNAFilled$date, sum,na.rm=TRUE)
+#this is the total number of steps per day
+meanstepsperday<-mean(sumstepsperday)
+#this is the mean number of steps for all days
+medianstepsperday<-median(sumstepsperday)
+#this is the median number of steps for all days
+
+hist(sumstepsperday, xlab="Adjusted Total Steps per day", ylab="freq", main="Adjusted Histogram Total steps per day", breaks=1000)
+
+cat("The adjusted (NA replaced) mean steps per day are", meanstepsperday, "steps")
+cat("The adjusted (NA replaced) median steps per day are", medianstepsperday, "steps")
+
+```
+
+### Weekend vs Weekday differences
+
+```{r , message=FALSE, warning=FALSE}
+
+library(chron)
+#now adding a variable with True for a weekend and False for weekday
+ActivityNAFilled$DayType<-is.weekend(ActivityNAFilled$date)
+WeekdayData<-subset(ActivityNAFilled,ActivityNAFilled$DayType==FALSE)
+WeekEndData<-subset(ActivityNAFilled,ActivityNAFilled$DayType==TRUE)
+MeanstepsperintervalWeekDay<-tapply(WeekdayData$steps, WeekdayData$interval, mean,na.rm=TRUE)
+MeanstepsperintervalWeekEnd<-tapply(WeekEndData$steps, WeekEndData$interval, mean,na.rm=TRUE)
+
+layout(matrix(1:2, ncol = 1), widths = 1.5, heights = c(5,5), respect = FALSE)
+par(mar = c(0, 5, 5, 2.1))
+plot(time,MeanstepsperintervalWeekDay,type = "l", ylab = "WeekDay")
+par(mar = c(5, 5, 0, 2.1))
+plot(time,MeanstepsperintervalWeekEnd,type = "l",ylab = "WeekEnd")
+
+```
