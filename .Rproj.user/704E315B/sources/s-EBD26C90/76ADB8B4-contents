@@ -2,16 +2,18 @@
 title: "Project1ReproducibleResearch"
 author: "Bassam Abdelnabi"
 date: "5/30/2019"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ### Mean per day analysis
 
-```{r , message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(dplyr)
 setwd("C:/Data")
@@ -34,7 +36,7 @@ cat("The median steps per day are", medianstepsperday, "steps")
 
 ### Daily activity pattern
 
-```{r , message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 
 #getting mean number of steps
 Meanstepsperinterval<-tapply(Activity$steps, Activity$interval, mean,na.rm=TRUE)
@@ -47,7 +49,7 @@ cat("The max number of steps occurs at interval", MaxInterval[[1]], "which corre
 ```
 ### Handling NA
 
-```{r , message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 
 #getting the number of NA
 NAInTheData<-sum(is.na(Activity))
@@ -73,7 +75,7 @@ cat("The adjusted (NA replaced) median steps per day are", medianstepsperday, "s
 
 ### Weekend vs Weekday differences
 
-```{r , message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 
 library(chron)
 #now adding a variable with True for a weekend and False for weekday

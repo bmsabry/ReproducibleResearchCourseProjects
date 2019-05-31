@@ -5,15 +5,16 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "0",
+    "hash" : "461171853",
     "id" : "76ADB8B4",
-    "lastKnownWriteTime" : 1559285074,
-    "last_content_update" : 1559285074357,
+    "lastKnownWriteTime" : 1559287513,
+    "last_content_update" : 1559287513113,
     "path" : "~/ReproducibleResearchCourseProjects/Project1ReproducibleResearch.Rmd",
     "project_path" : "Project1ReproducibleResearch.Rmd",
     "properties" : {
-        "cursorPosition" : "3,17",
-        "scrollLine" : "0"
+        "cursorPosition" : "68,130",
+        "last_setup_crc32" : "EBD26C90bb338d19",
+        "scrollLine" : "61"
     },
     "read_only" : false,
     "read_only_alternatives" : [
